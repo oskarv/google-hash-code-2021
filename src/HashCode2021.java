@@ -14,10 +14,10 @@ public class HashCode2021 {
     public static void main(String[] argv) {
         Instant start = Instant.now();
         System.out.println("====================== Google Hash Code 2021. ======================");
-        File input = new File("src\\input\\a_example");
+        File input = new File("src/input/a_example");
         try {
             BufferedReader reader = new BufferedReader(new FileReader(input));
-            File output = new File("src\\output\\a_example");
+            File output = new File("src/output/a_example");
             Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(output)));
             writer.write("Output File: \n");
             String currentLine;
