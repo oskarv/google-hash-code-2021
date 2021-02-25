@@ -1,4 +1,5 @@
 import model.Car;
+import model.Intersection;
 import model.Street;
 
 import java.io.BufferedReader;
@@ -12,7 +13,9 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class HashCode2021 {
 
@@ -28,6 +31,7 @@ public class HashCode2021 {
 
             List<Street> streets = new ArrayList<>();
             List<Car> cars = new ArrayList<>();
+            Map<String, Street> streetMap = new HashMap<>();
             int duration, numOfIntersections, numOfStreets, numOfCars, bonus;
             currentLine = reader.readLine();
             String[] firstLineArray = currentLine.split(" ");
@@ -45,6 +49,7 @@ public class HashCode2021 {
                 street.setIntersectionsAtEnd(Integer.parseInt(dataInCurrentLine[1]));
                 street.setName(dataInCurrentLine[2]);
                 street.setTravelTime(Integer.parseInt(dataInCurrentLine[3]));
+                streetMap.put(street.getName(), street);
                 streets.add(street);
             }
 
@@ -56,6 +61,42 @@ public class HashCode2021 {
                 List<String> streetsInCarPath = new ArrayList<>(Arrays.asList(dataInCurrentLine).subList(1, dataInCurrentLine.length));
                 car.setStreets(streetsInCarPath);
                 cars.add(car);
+            }
+
+            Map<Integer, Intersection> intersectionMap = new HashMap<>();
+            for(int i = 0; i < numOfIntersections; i++) {
+                intersectionMap.put(i, new Intersection());
+            }
+
+            for(Street street : streets) {
+                intersectionMap.get(street.getIntersectionsAtEnd()).getStreetsThatStart().add(street);
+                intersectionMap.get(street.getIntersectionsAtStart()).getStreetsThatEnd().add(street);
+            }
+
+            for(int i = 0; i < duration; i++) {
+                for(Car car : cars) {
+                    if(car.getStreets().size() > i) {
+                        streetMap.get(car.getStreets().get(i)).numOfCarsPassed += 1;
+                    }
+                }
+            }
+
+            int count = 0;
+            for(int i = 0; i < numOfIntersections; i++) {
+                if(intersectionMap.get(i).getStreetsThatStart().size() > 0) {
+                    count++;
+                }
+            }
+
+            writer.write(count + "\n");
+            for(int i = 0; i < numOfIntersections; i++) {
+                if(intersectionMap.get(i).getStreetsThatStart().size() > 0) {
+                    writer.write(i + "\n");
+                    writer.write(intersectionMap.get(i).getStreetsThatStart().size() + "\n");
+                    for(Street street : intersectionMap.get(i).getStreetsThatStart()) {
+                        writer.write(street.getName() + " " + duration/90 + "\n");
+                    }
+                }
             }
 
             writer.close();

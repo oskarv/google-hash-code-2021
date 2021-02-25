@@ -1,10 +1,15 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Street {
     int intersectionsAtStart;
     int intersectionsAtEnd;
     String name;
     int travelTime;
+    List<Integer> numOfCarsEachTick;
+    public int numOfCarsPassed = 0;
 
     public int getIntersectionsAtStart() {
         return intersectionsAtStart;
@@ -37,4 +42,17 @@ public class Street {
     public void setTravelTime(int travelTime) {
         this.travelTime = travelTime;
     }
+
+    public List<Integer> getNumOfCarsEachTick() {
+        return numOfCarsEachTick;
+    }
+
+    public void setNumOfCarsEachTick(int duration) {
+        numOfCarsEachTick = new ArrayList<>(duration);
+        for(int i = 0; i < duration; i++) {
+            numOfCarsEachTick.add(0);
+        }
+    }
+
+
 }
